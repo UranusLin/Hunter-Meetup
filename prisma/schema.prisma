@@ -3,15 +3,15 @@ generator client {
   previewFeatures = ["referentialIntegrity", "interactiveTransactions"]
 }
 
-// TiDB is highly compatible with the MySQL 5.7 protocol and the common features 
+// TiDB is highly compatible with the MySQL 5.7 protocol and the common features
 // and syntax of MySQL 5.7.
 //
-// TiDB currently does not support foreign key constraints. If you need to use the feature of 
+// TiDB currently does not support foreign key constraints. If you need to use the feature of
 // referential integrity, you can use the application layer implementation of prisma.
 //
 // Refercene: https://www.prisma.io/docs/concepts/components/prisma-schema/relations/referential-integrity#handling-the-referential-integrity-in-prisma
 // Related Issue [WIP]: https://github.com/pingcap/tidb/issues/18209
-// 
+//
 // More descriptions about MySQL compatibility:
 // Refercene: https://docs.pingcap.com/tidb/dev/mysql-compatibility
 
@@ -21,91 +21,137 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-// 
+//
 // https://www.prisma.io/docs/concepts/components/prisma-schema/data-model
 
-model Author {
-  id          BigInt   @id
-  name        String   @db.VarChar(100)
-  gender      Boolean?
-  birthYear   Int?     @db.SmallInt @map("birth_year")
-  deathYear   Int?     @db.SmallInt @map("death_year")
-  books       BookAuthor[]
-	@@map("authors")
+model Member {
+  id        BigInt       @id @default(autoincrement())
+  name      String       @db.VarChar(100)
+  gender    Boolean?
+  birthYear Int?         @map("birth_year") @db.SmallInt
+  deathYear Int?         @map("death_year") @db.SmallInt
+  rooms     RoomMember[]
+  user      User         @relation(fields: [userId], references: [id])
+  userId    BigInt       @map("user_id")
+  Room      Room[]
+
+  @@map("members")
 }
 
-model BookAuthor {
-  book     Book   @relation(fields: [bookId], references: [id])
-  bookId   BigInt @map("book_id")
-  author   Author @relation(fields: [authorId], references: [id])
-  authorId BigInt @map("author_id")
+model RoomMember {
+  room     Room   @relation(fields: [roomId], references: [id])
+  roomId   BigInt @map("book_id")
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId BigInt @map("author_id")
 
-  @@id([bookId, authorId])
-	@@map("book_authors")
+  @@id([roomId, memberId])
+  @@map("room_members")
 }
 
-model Book {
-  id           BigInt     @id
-  title        String     @db.VarChar(100)
-  type         BookType
-  publishedAt  DateTime   @db.DateTime(0) @map("published_at")
-  stock        Int        @default(0)
-  price        Decimal    @default(0.0) @db.Decimal(15, 2)
-  authors      BookAuthor[]
-  ratings      Rating[]
-  orders       Order[]
-	@@map("books")
+model Room {
+  id          BigInt       @id @default(autoincrement())
+  host        Member       @relation(fields: [hostId], references: [id])
+  hostId      BigInt       @map("host_id")
+  title       String       @db.VarChar(100)
+  roomType    RoomType
+  publishedAt DateTime     @map("published_at") @db.DateTime(0)
+  stock       Int          @default(0)
+  price       Decimal      @default(0.0) @db.Decimal(15, 2)
+  members     RoomMember[]
+  ratings     Rating[]
+  orders      Order[]
+  event       Event?       @relation(fields: [eventId], references: [id])
+  eventId     BigInt?      @map("event_id")
+  location    Location     @default(Taipei)
+
+  @@map("rooms")
 }
 
 model Order {
-  id          BigInt   @id @default(autoincrement())
-  book        Book     @relation(fields: [bookId], references: [id])
-  bookId      BigInt   @map("book_id")
-  user        User     @relation(fields: [userId], references: [id])
-  userId      BigInt   @map("user_id")
-  quality     Int      @db.TinyInt
-  orderedAt   DateTime @default(now()) @db.DateTime(0) @map("ordered_at")
+  id        BigInt   @id @default(autoincrement())
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    BigInt   @map("room_id")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    BigInt   @map("user_id")
+  quality   Int      @db.TinyInt
+  orderedAt DateTime @default(now()) @map("ordered_at") @db.DateTime(0)
 
-  @@index([bookId])
-	@@map("orders")
+  @@index([roomId])
+  @@map("orders")
 }
 
 model Rating {
-  book    Book     @relation(fields: [bookId], references: [id])
-  bookId  BigInt   @map("book_id")
+  room    Room     @relation(fields: [roomId], references: [id])
+  roomId  BigInt   @map("room_id")
   user    User     @relation(fields: [userId], references: [id])
   userId  BigInt   @map("user_id")
   score   Int      @db.TinyInt
-  ratedAt DateTime @default(now()) @db.DateTime(0) @map("rated_at")
+  ratedAt DateTime @default(now()) @map("rated_at") @db.DateTime(0)
 
-  @@id([bookId, userId])
-  @@unique([bookId, userId], map: "uniq_book_user_idx")
-	@@map("ratings")
+  @@id([roomId, userId])
+  @@unique([roomId, userId], map: "uniq_room_user_idx")
+  @@map("ratings")
 }
 
 model User {
-  id       BigInt   @id
+  id       BigInt   @id @default(autoincrement())
   balance  Decimal  @default(0.0) @db.Decimal(15, 2)
   nickname String   @unique(map: "nickname") @db.VarChar(100)
   ratings  Rating[]
   orders   Order[]
+  Member   Member[]
 
-	@@map("users")
+  @@map("users")
+}
+
+// add event object
+model Event {
+  id        BigInt    @id @default(autoincrement())
+  name      String    @db.VarChar(100)
+  createdAt DateTime  @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt DateTime  @default(now()) @map("updated_at") @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+  imgURL    String    @map("img_url") @db.VarChar(200)
+  books     Room[]
+
+  @@map("events")
 }
 
 // Because special characters cannot be used in the schema definition of the data model.
 // We use `_nbsp_` to represent one space and use `_amp_` to represent `&`.
 
-enum BookType {
-  Magazine
-  Novel
-  Life
-  Arts
-  Comics
-  Education_nbsp__amp__nbsp_Reference             @map("Education & Reference")
-  Humanities_nbsp__amp__nbsp_Social_nbsp_Sciences @map("Humanities & Social Sciences")
-  Science_nbsp__amp__nbsp_Technology              @map("Science & Technology")
-  Kids
-  Sports
-	@@map("books_type")
+enum RoomType {
+  Four_nbsp_Person
+  Six_nbsp_Person
+  Eight_nbsp_Person
+  Ten_nbsp_Person
+
+  @@map("rooms_type")
+}
+
+// enum location
+enum Location {
+  Taipei
+  Taoyuan
+  Hsinchu
+  Miaoli
+  Taichung
+  Changhua
+  Yunlin
+  Chiayi
+  Tainan
+  Kaohsiung
+  Pingtung
+  Taitung
+  Hualien
+  Yilan
+  Keelung
+  New_nbsp_Taipei
+  Hsinchu_nbsp_City
+  Chiayi_nbsp_City
+  Kinmen
+  Penghu
+  Lienchiang
+  Nantou_nbsp_County
+  Nantou
 }

@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { useSnackbar } from 'notistack';
-import NextRouter from 'next/router';
+import * as React from "react";
+import { useSnackbar } from "notistack";
+import NextRouter from "next/router";
 
-import { deleteRating } from 'lib/http';
+import { deleteRating } from "lib/http";
 
 export interface BookRatingDeleteDialog {
   bookId: string;
@@ -27,14 +27,14 @@ const BookRatingDeleteDialog = React.forwardRef(
       const response = await deleteRating(props.bookId, props.userId);
       if (response.error) {
         enqueueSnackbar(`Error: Delete target rating.`, {
-          variant: 'error',
+          variant: "error",
         });
         setLoading(false);
         handleClose();
         return;
       }
       enqueueSnackbar(`The rating was successfully deleted.`, {
-        variant: 'success',
+        variant: "success",
       });
       setLoading(false);
       handleClose();
@@ -42,31 +42,31 @@ const BookRatingDeleteDialog = React.forwardRef(
     };
 
     return (
-      <dialog id={userId} className='modal' ref={ref}>
-        <form method='dialog' className='modal-box'>
-          <h3 className='font-bold text-lg'>
+      <dialog id={userId} className="modal" ref={ref}>
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg">
             Delete this rating?{`[userID: ${userId}]`}
           </h3>
-          <p className='py-4'>This operation is not reversible.</p>
+          <p className="py-4">This operation is not reversible.</p>
 
-          <div className='modal-action'>
+          <div className="modal-action">
             {/* if there is a button in form, it will close the modal */}
-            <button className='btn'>Cancel</button>
+            <button className="btn">Cancel</button>
             <button
-              className='btn btn-error'
+              className="btn btn-error"
               disabled={loading}
               onClick={handleDelete}
             >
-              {loading && <span className='loading loading-spinner' />}
+              {loading && <span className="loading loading-spinner" />}
               Delete
             </button>
           </div>
         </form>
       </dialog>
     );
-  }
+  },
 );
 
-BookRatingDeleteDialog.displayName = 'BookRatingDeleteDialog';
+BookRatingDeleteDialog.displayName = "BookRatingDeleteDialog";
 
 export default BookRatingDeleteDialog;

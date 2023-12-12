@@ -1,21 +1,21 @@
-import * as React from 'react';
-import Image from 'next/image';
-import { useSnackbar } from 'notistack';
-import { PlusIcon, MinusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import * as React from "react";
+import Image from "next/image";
+import { useSnackbar } from "notistack";
+import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-import { useRecoilState } from 'recoil';
-import { shoppingCartState, currentUserIdState } from 'atoms';
+import { useRecoilState } from "recoil";
+import { shoppingCartState, currentUserIdState } from "atoms";
 
-import { shoppingCartItemProps } from 'const';
-import { currencyFormat, calcCartItemTotalPrice } from 'lib/utils';
-import { buyBook } from 'lib/http';
+import { shoppingCartItemProps } from "const";
+import { currencyFormat, calcCartItemTotalPrice } from "lib/utils";
+import { buyBook } from "lib/http";
 
 export default function ShoppingCartListItem(props: shoppingCartItemProps) {
   const {
     id,
     title,
-    authors,
-    type,
+    members,
+    roomType,
     price,
     averageRating,
     quantity,
@@ -75,13 +75,13 @@ export default function ShoppingCartListItem(props: shoppingCartItemProps) {
     });
     if (response.error) {
       enqueueSnackbar(`Error: ${response.error}.`, {
-        variant: 'error',
+        variant: "error",
       });
       setLoading(false);
       return;
     }
     enqueueSnackbar(`${response.content?.message}`, {
-      variant: 'success',
+      variant: "success",
     });
     setLoading(false);
     setShoppingCart((oldShoppingCart) => {
@@ -91,7 +91,7 @@ export default function ShoppingCartListItem(props: shoppingCartItemProps) {
 
   return (
     <>
-      <div className='card card-side bg-base-100 shadow-xl'>
+      <div className="card card-side bg-base-100 shadow-xl">
         <figure>
           <Image
             src={`https://picsum.photos/seed/${id}/200/300`}
@@ -100,53 +100,53 @@ export default function ShoppingCartListItem(props: shoppingCartItemProps) {
             height={225}
           />
         </figure>
-        <div className='card-body'>
-          <div className='flex flex-col gap-1'>
+        <div className="card-body">
+          <div className="flex flex-col gap-1">
             <p>
-              <span className='text-lg font-bold pr-4'>Title:</span>
+              <span className="text-lg font-bold pr-4">Title:</span>
               {title}
             </p>
             <p>
-              <span className='text-lg font-bold pr-4'>Type:</span>
-              {type.replaceAll(`_nbsp_`, ` `).replaceAll(`_amp_`, `&`)}
+              <span className="text-lg font-bold pr-4">Type:</span>
+              {roomType.replaceAll(`_nbsp_`, ` `).replaceAll(`_amp_`, `&`)}
             </p>
             <p>
-              <span className='text-lg font-bold pr-4'>Publication date:</span>
+              <span className="text-lg font-bold pr-4">Publication date:</span>
               {new Date(publishedAt).toLocaleDateString()}
             </p>
             <p>
-              <span className='text-lg font-bold pr-4'>Price:</span>
+              <span className="text-lg font-bold pr-4">Price:</span>
               {`$ ${currencyFormat(price)}`}
             </p>
             <p>
-              <span className='text-lg font-bold pr-4'>In stock:</span>
+              <span className="text-lg font-bold pr-4">In stock:</span>
               {stock}
             </p>
-            <div className='flex justify-between'>
-              <div className='join'>
+            <div className="flex justify-between">
+              <div className="join">
                 <button
-                  className='btn btn-sm join-item'
+                  className="btn btn-sm join-item"
                   disabled={quantity >= stock}
                   onClick={handleAddQty}
                 >
-                  <PlusIcon className='stroke-current shrink-0 w-6 h-6' />
+                  <PlusIcon className="stroke-current shrink-0 w-6 h-6" />
                 </button>
                 <input
-                  className='input input-sm input-bordered join-item w-12'
+                  className="input input-sm input-bordered join-item w-12"
                   value={quantity}
                   disabled
                 />
                 <button
-                  className='btn btn-sm join-item'
+                  className="btn btn-sm join-item"
                   disabled={quantity <= 1}
                   onClick={handleRemoveQty}
                 >
-                  <MinusIcon className='stroke-current shrink-0 w-6 h-6' />
+                  <MinusIcon className="stroke-current shrink-0 w-6 h-6" />
                 </button>
               </div>
-              <div className='flex justify-end gap-4'>
-                <div className='font-bold'>
-                  <span className='pr-1'>
+              <div className="flex justify-end gap-4">
+                <div className="font-bold">
+                  <span className="pr-1">
                     {quantity === 1
                       ? `(${quantity} item) $`
                       : `(${quantity} items) $`}
@@ -155,17 +155,17 @@ export default function ShoppingCartListItem(props: shoppingCartItemProps) {
                 </div>
               </div>
             </div>
-            <div className='flex justify-end gap-4'>
-              <button className='btn btn-sm btn-error' onClick={deleteItem}>
-                <TrashIcon className='stroke-current shrink-0 w-6 h-6' />
+            <div className="flex justify-end gap-4">
+              <button className="btn btn-sm btn-error" onClick={deleteItem}>
+                <TrashIcon className="stroke-current shrink-0 w-6 h-6" />
                 Delete
               </button>
               <button
-                className='btn btn-sm btn-info'
+                className="btn btn-sm btn-info"
                 onClick={handleBuyClick}
                 disabled={loading}
               >
-                {loading && <span className='loading loading-spinner' />}
+                {loading && <span className="loading loading-spinner" />}
                 Proceed to Purchase
               </button>
             </div>

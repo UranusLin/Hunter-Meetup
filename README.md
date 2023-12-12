@@ -1,62 +1,100 @@
-# Bookshop Demo
+# Hunter Meetup
 
-Bookshop is a virtual online bookstore application through which you can find books of various categories and rate the books.
+## Introduction
 
-You can perform CRUD operations such as viewing book details, adding and deleting ratings, editing book inventory, etc.
+Hunter Meetup is an innovative platform designed to enhance the gaming experience for players of the popular mobile game "Monster Hunter Now". By leveraging blockchain technology, specifically Sui's ZKLogin and Closed-loop Token systems, Hunter Meetup provides a secure and private way for gamers to connect, organize, and participate in in-game events.
 
-> Powered by TiDB Cloud, Prisma and Vercel.
+## Features
 
-## 🔥 Visit Live Demo
+### Secure Login with ZKLogin
 
-[👉 Click here to visit](https://tidb-prisma-vercel-demo.vercel.app/)
+- Utilize ZKLogin for secure and private authentication.
+- Users can log in using their Google Mail accounts without compromising personal information.
 
-![image](https://github.com/pingcap/tidb-prisma-vercel-demo/assets/56986964/2ef5fd7f-9023-45f4-b639-f4ba4ddec157)
+### Room Creation and Management
 
-## Deploy on Vercel
+- Players can create rooms specifying the time, location, number of participants, character information, weapon levels, etc.
+- Other players can browse and join these rooms based on their preferences and game objectives.
 
-## 🧑‍🍳 Before We Start
+### Closed-loop Token Rewards
 
-Create a [TiDB Cloud](https://tidbcloud.com/) account and get your free trial cluster.
+- Participants completing events or challenges in-game are rewarded with Hunter Meetup's exclusive Closed-loop Tokens.
+- These tokens can be used within the platform for various services or to claim special rewards.
 
-### 🚀 One Click Deploy
+### Social and Collaboration Hub
 
-You can click the button to quickly deploy this demo if already has an TiDB Cloud cluster.
+- A dedicated space for players to meet, plan strategies, and form teams for in-game events.
+- Enhances the community aspect of "Monster Hunter Now".
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=TiDB%20Cloud%20Starter&demo-description=A%20bookstore%20demo%20built%20on%20TiDB%20Cloud%20and%20Next.js.&demo-url=https%3A%2F%2Ftidb-prisma-vercel-demo.vercel.app%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F2HMASOQn8hQit2IFi2hK3j%2Fcfe7cc2aeba4b8f6760a3ea14c32f707%2Fscreenshot-20220902-160324_-_Chen_Zhen.png&project-name=TiDB%20Cloud%20Starter&repository-name=tidb-cloud-starter&repository-url=https%3A%2F%2Fgithub.com%2Fpingcap%2Ftidb-prisma-vercel-demo&from=templates&integration-ids=oac_coKBVWCXNjJnCEth1zzKoF1j)
+## Getting Started
 
-> Integration will guide you connect your TiDB Cloud cluster to Vercel.
+To start using Hunter Meetup, follow these simple steps:
 
-<details>
-  <summary><h3>Manually Deploy (Not recommended)</h3></summary>
+1. **Clone the repository:**
 
-#### 1. Get connection details
+```shell
+git clone https://github.com/yourusername/HunterMeetup.git
+```
 
-You can get the connection details by clicking the `Connect` button.
+2. **Navigate to the project directory:**
 
-![image](https://github.com/pingcap/tidb-prisma-vercel-demo/assets/56986964/86e5df8d-0d61-49ca-a1a8-d53f2a3f618c)
+```shell
+cd HunterMeetup
+```
 
-Get `User` and `Host` field from the dialog.
+3. **Install the dependencies:**
 
-> Note: For importing initial data from local, you can set an Allow All traffic filter here by entering an IP address of `0.0.0.0/0`.
+```shell
+yarn install
+```
 
-![image](https://github.com/pingcap/tidb-prisma-vercel-demo/assets/56986964/8d32ed58-4edb-412f-8af8-0e1303cceed9)
+4. **Create a `.env` file in the root directory and add the following:**
 
-Your `DATABASE_URL` should look like `mysql://<User>:<Password>@<Host>:4000/bookshop`
+```shell
+cp .env.example .env
+```
 
-#### 2. Deploy on Vercel
+setting following environment variables:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fpingcap%2Ftidb-prisma-vercel-demo&repository-name=tidb-prisma-vercel-demo&env=DATABASE_URL&envDescription=TiDB%20Cloud%20connection%20string&envLink=https%3A%2F%2Fdocs.pingcap.com%2Ftidb%2Fdev%2Fdev-guide-build-cluster-in-cloud&project-name=tidb-prisma-vercel-demo)
+```shell
+TIDB_USER=
+TIDB_PASSWORD=
+TIDB_HOST=
+TIDB_PORT=
+TIDB_DB_NAME=
+DATABASE_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000/
+```
 
-![image](https://user-images.githubusercontent.com/56986964/199161016-2d236629-bb6a-4e3c-a700-c0876523ca6a.png)
+5. **Run the database migrations:**
 
-</details>
+```shell
+yarn prisma:db
+yarn prisma:deploy
+yarn prisma:generate
+```
 
-## 📖 Development Reference
+6. **Start the development server:**
 
-### Prisma
+```shell
+yarn dev
+```
 
-[Prisma Deployment Guide](https://www.prisma.io/docs/guides/deployment/deploying-to-vercel)
+## Contributing
 
-### Bookshop Schema
+Contributions to Hunter Meetup are welcome. Please read our contributing guidelines before submitting pull requests.
 
-[Bookshop Schema Design](https://docs.pingcap.com/tidbcloud/dev-guide-bookshop-schema-design)
+## License
+
+## Contact
+
+For any queries or support, please reach out to [MorrisLin](aka611511@gmail.com).
+
+## Acknowledgements
+
+- Monster Hunter Now Developers
+- Sui Network
+- Contributors and Supporters of Hunter Meetup

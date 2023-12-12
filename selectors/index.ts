@@ -6,27 +6,33 @@ import {
   useRecoilValue,
   waitForNone,
 } from "recoil";
-import { bookDetailsIdState, homePageQueryState } from "atoms";
+import { roomDetailsIdState, homePageQueryState } from "atoms";
 import {
-  fetchBookDetailsById,
+  fetchRoomDetailsById,
   fetchBookRatingsById,
-  fetchBooks,
+  fetchRooms,
 } from "lib/http";
 
 export const homePageQuery = selector({
   key: "homePage",
   get: async ({ get }) => {
-    const { page, size, type, sort } = get(homePageQueryState);
-    const response = await fetchBooks({ page, size, type, sort });
+    const { page, size, location, roomType, sort } = get(homePageQueryState);
+    const response = await fetchRooms({
+      page,
+      size,
+      location,
+      roomType,
+      sort,
+    });
     return response;
   },
 });
 
-export const bookInfoQuery = selector({
+export const roomInfoQuery = selector({
   key: "BookInfoQuery",
   get: async ({ get }) => {
-    const bookID = get(bookDetailsIdState);
-    const response = await fetchBookDetailsById(bookID);
+    const roomID = get(roomDetailsIdState);
+    const response = await fetchRoomDetailsById(roomID);
     if (response.error) {
       throw response.error;
     }
@@ -37,9 +43,9 @@ export const bookInfoQuery = selector({
 export const bookRatingQuery = selector({
   key: "BookRatingQuery",
   get: async ({ get }) => {
-    const bookID = get(bookDetailsIdState);
+    const bookID = get(roomDetailsIdState);
     if (!bookID) {
-      throw new Error('Required bookID');
+      throw new Error("Required bookID");
     }
     const response = await fetchBookRatingsById(bookID);
     if (response.error) {

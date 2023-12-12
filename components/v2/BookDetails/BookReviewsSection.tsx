@@ -1,34 +1,34 @@
-import * as React from 'react';
-import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import * as React from "react";
+import { useRecoilState, useRecoilValueLoadable } from "recoil";
 
-import { bookDetailsIdState } from 'atoms';
-import { bookRatingQuery } from 'selectors';
-import { BookRatingsProps, starLabels } from 'const';
-import { roundHalf } from 'lib/utils';
-import HalfRating from 'components/v2/Rating/HalfRating';
-import BookRatingDeleteDialog from 'components/v2/BookDetails/BookRatingDeleteDialog';
-import BookAddRatingDialog from 'components/v2/BookDetails/BookAddRatingDialog';
+import { roomDetailsIdState } from "atoms";
+import { bookRatingQuery } from "selectors";
+import { RoomRatingsProps, starLabels } from "const";
+import { roundHalf } from "lib/utils";
+import HalfRating from "components/v2/Rating/HalfRating";
+import BookRatingDeleteDialog from "components/v2/BookDetails/BookRatingDeleteDialog";
+import BookAddRatingDialog from "components/v2/BookDetails/BookAddRatingDialog";
 
 export default function BookReviewsSection() {
   const addRatingDialogRef = React.useRef<HTMLDialogElement>(null);
 
   const bookRatingLoadable = useRecoilValueLoadable(bookRatingQuery);
-  const [bookDetailsId] = useRecoilState(bookDetailsIdState);
+  const [bookDetailsId] = useRecoilState(roomDetailsIdState);
 
   switch (bookRatingLoadable.state) {
-    case 'hasValue':
+    case "hasValue":
       const data = bookRatingLoadable.contents.content;
       return (
         <>
-          <div className='hero h-auto justify-start mt-6'>
-            <div className='hero-content items-start'>
-              <div className='max-w-md'>
-                <h2 className='text-3xl font-bold'>Customer Reviews</h2>
-                <p className='py-6'>
+          <div className="hero h-auto justify-start mt-6">
+            <div className="hero-content items-start">
+              <div className="max-w-md">
+                <h2 className="text-3xl font-bold">Customer Reviews</h2>
+                <p className="py-6">
                   <ReviewOverview content={data.content} />
                 </p>
                 <button
-                  className='btn btn-info'
+                  className="btn btn-info"
                   onClick={() => {
                     addRatingDialogRef?.current?.showModal();
                   }}
@@ -36,7 +36,7 @@ export default function BookReviewsSection() {
                   Add Review
                 </button>
               </div>
-              <div className='overflow-x-auto mt-16'>
+              <div className="overflow-x-auto mt-16">
                 {data?.content?.length > 0 && (
                   <ReviewsTable content={data.content} bookId={bookDetailsId} />
                 )}
@@ -49,65 +49,65 @@ export default function BookReviewsSection() {
           />
         </>
       );
-    case 'loading':
+    case "loading":
       return (
         <>
-          <div className='flex items-center justify-center mt-6'>
-            <span className='loading loading-bars loading-lg'></span>
+          <div className="flex items-center justify-center mt-6">
+            <span className="loading loading-bars loading-lg"></span>
           </div>
         </>
       );
-    case 'hasError':
+    case "hasError":
       // throw bookRatingLodable.contents;
       return <></>;
   }
 }
 
-const ReviewOverview = (props: { content: BookRatingsProps[] }) => {
+const ReviewOverview = (props: { content: RoomRatingsProps[] }) => {
   const num = props.content.length;
   const sum = props.content.reduce((prev, item) => {
     return prev + item.score;
   }, 0);
   const avg = sum / num;
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex items-center py-2'>
-        <HalfRating disabled rating={avg} />
-        <div className='ml-2'>{starLabels[roundHalf(avg)]}</div>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center py-2">
+        <HalfRating disabled joined={avg} />
+        <div className="ml-2">{starLabels[roundHalf(avg)]}</div>
       </div>
-      <div className='text-sm text-gray-500'>{`${num} global ratings`}</div>
+      <div className="text-sm text-gray-500">{`${num} global ratings`}</div>
       <StarPercentageBar
-        leftText='5 Star'
+        leftText="5 Star"
         value={
           (props.content.filter((i) => i.score === 5).length / num) * 100 || 0
         }
       />
       <StarPercentageBar
-        leftText='4 Star'
+        leftText="4 Star"
         value={
           (props.content.filter((i) => i.score === 4).length / num) * 100 || 0
         }
       />
       <StarPercentageBar
-        leftText='3 Star'
+        leftText="3 Star"
         value={
           (props.content.filter((i) => i.score === 3).length / num) * 100 || 0
         }
       />
       <StarPercentageBar
-        leftText='2 Star'
+        leftText="2 Star"
         value={
           (props.content.filter((i) => i.score === 2).length / num) * 100 || 0
         }
       />
       <StarPercentageBar
-        leftText='1 Star'
+        leftText="1 Star"
         value={
           (props.content.filter((i) => i.score === 1).length / num) * 100 || 0
         }
       />
       <StarPercentageBar
-        leftText='0 Star'
+        leftText="0 Star"
         value={
           (props.content.filter((i) => i.score === 0).length / num) * 100 || 0
         }
@@ -120,22 +120,22 @@ const StarPercentageBar = (props: { leftText?: string; value: number }) => {
   const { leftText, value = 0 } = props;
   const valueRound = Math.round(value);
   return (
-    <div className='flex items-center justify-between gap-2'>
+    <div className="flex items-center justify-between gap-2">
       {leftText && (
-        <span className='text-sm text-gray-500 w-32'>{leftText}</span>
+        <span className="text-sm text-gray-500 w-32">{leftText}</span>
       )}
       <progress
-        className='progress progress-info'
+        className="progress progress-info"
         value={valueRound}
-        max='100'
+        max="100"
       ></progress>
-      <span className='text-sm text-gray-500 w-32'>{`${valueRound}%`}</span>
+      <span className="text-sm text-gray-500 w-32">{`${valueRound}%`}</span>
     </div>
   );
 };
 
 const ReviewsTable = (props: {
-  content: BookRatingsProps[];
+  content: RoomRatingsProps[];
   bookId: string;
 }) => {
   const { content, bookId } = props;
@@ -150,7 +150,7 @@ const ReviewsTable = (props: {
 
   return (
     <>
-      <table className='table'>
+      <table className="table">
         {/* head */}
         <thead>
           <tr>
@@ -167,29 +167,29 @@ const ReviewsTable = (props: {
               <>
                 <tr key={item.userId}>
                   <td>
-                    <div className='flex items-center space-x-3'>
-                      <div className='avatar placeholder'>
-                        <div className='bg-neutral-focus text-neutral-content mask mask-squircle w-12 h-12'>
-                          <span className='text-3xl'>
+                    <div className="flex items-center space-x-3">
+                      <div className="avatar placeholder">
+                        <div className="bg-neutral-focus text-neutral-content mask mask-squircle w-12 h-12">
+                          <span className="text-3xl">
                             {item.user.nickname.substring(0, 1)}
                           </span>
                         </div>
                       </div>
                       <div>
-                        <div className='font-bold'>{item.user.nickname}</div>
-                        <div className='text-sm opacity-50'>
+                        <div className="font-bold">{item.user.nickname}</div>
+                        <div className="text-sm opacity-50">
                           User ID: {item.user.id}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td>
-                    <HalfRating disabled rating={item.score} />
+                    <HalfRating disabled joined={item.score} />
                   </td>
                   <td>{`${new Date(item.ratedAt).toLocaleDateString()}`}</td>
                   <th>
                     <button
-                      className='btn btn-error btn-xs'
+                      className="btn btn-error btn-xs"
                       onClick={handleDelete(item.userId)}
                     >
                       delete

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import NextLink from 'next/link';
+import * as React from "react";
+import NextLink from "next/link";
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -7,9 +7,9 @@ import {
   XMarkIcon,
   ShoppingCartIcon,
   UserIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
-import Header, { HeaderProps } from 'components/v2/Layout/Header';
+import Header, { HeaderProps } from "components/v2/Layout/Header";
 
 export interface CommonLayoutProps {
   children?: any;
@@ -21,11 +21,11 @@ export default function CommonLayout(props: CommonLayoutProps) {
 
   return (
     <>
-      <div className='min-h-full'>
+      <div className="min-h-full">
         <Header {...headerProps} />
 
         <main>
-          <div className='mx-auto max-w-7xl py-6 px-4'>
+          <div className="mx-auto max-w-7xl py-6 px-4">
             {/* Your content */}
             {children}
           </div>

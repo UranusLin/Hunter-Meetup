@@ -1,22 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 
-import prisma from '../../../lib/prisma'
+import prisma from "../../../lib/prisma";
 
 const bookOrderMoMHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<any>,
 ) => {
-  if (req.method === 'GET') {
-	res.status(200).json(await getBookOrdersMonthOverMonth(req));
+  if (req.method === "GET") {
+    res.status(200).json(await getBookOrdersMonthOverMonth(req));
   } else {
     res.status(401).json({
-      message: `HTTP method ${req.method} is not supported.`
+      message: `HTTP method ${req.method} is not supported.`,
     });
   }
-}
+};
 
 async function getBookOrdersMonthOverMonth(req: NextApiRequest) {
-	const result = await prisma.$queryRaw`
+  const result = await prisma.$queryRaw`
 		WITH orders_group_by_month AS (
 			SELECT
 				b.type AS book_type,
@@ -37,9 +37,9 @@ async function getBookOrdersMonthOverMonth(req: NextApiRequest) {
 		SELECT * FROM acc;
 	`;
 
-	return {
-		result: result
-	}
+  return {
+    result: result,
+  };
 }
 
 export default bookOrderMoMHandler;

@@ -1,9 +1,9 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 
-import { shoppingCartItemProps, BookProps, PAGE_SIZE } from "const";
+import { shoppingCartItemProps, RoomProps, PAGE_SIZE } from "const";
 
-export const homePageBookSumState = atom({
-  key: "homePageBookSumState",
+export const homePageRoomSumState = atom({
+  key: "homePageRoomSumState",
   default: 0,
 });
 
@@ -12,18 +12,23 @@ export const shoppingCartState = atom<shoppingCartItemProps[]>({
   default: [],
 });
 
-export const bookTypeListState = atom<string[]>({
-  key: "bookTypeListState",
+export const locationListState = atom<string[]>({
+  key: "locationListState",
+  default: [],
+});
+
+export const roomTypeListState = atom<string[]>({
+  key: "roomTypeListState",
   default: [],
 });
 
 export const homePageQueryState = atom({
   key: "homePageQueryState",
-  default: { page: 1, type: "", sort: "", size: PAGE_SIZE },
+  default: { page: 1, location: "", roomType: "", sort: "", size: PAGE_SIZE },
 });
 
-export const bookDetailsIdState = atom({
-  key: "bookDetailsIdState",
+export const roomDetailsIdState = atom({
+  key: "roomDetailsIdState",
   default: "",
 });
 

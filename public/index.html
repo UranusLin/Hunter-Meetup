@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>TiDB example with Prisma and Vercel</title>
@@ -92,31 +92,31 @@
     </div>
 
     <script>
-      const responseContainer = document.querySelector('.response-container')
-      const loader = document.querySelector('.loader')
+      const responseContainer = document.querySelector(".response-container");
+      const loader = document.querySelector(".loader");
       function renderResponse(res) {
-        responseContainer.textContent = JSON.stringify(res, null, 2)
+        responseContainer.textContent = JSON.stringify(res, null, 2);
       }
 
-      const getApi = endpoint => {
-        loader.classList.remove('invisible')
+      const getApi = (endpoint) => {
+        loader.classList.remove("invisible");
         fetch(`/api/${endpoint}`)
-          .then(function(response) {
-            return response.json()
+          .then(function (response) {
+            return response.json();
           })
-          .then(function(response) {
-            renderResponse(response)
-            responseContainer.classList.remove('invisible')
-            loader.classList.add('invisible')
+          .then(function (response) {
+            renderResponse(response);
+            responseContainer.classList.remove("invisible");
+            loader.classList.add("invisible");
           })
-          .catch(function(err) {
-            responseContainer.classList.remove('invisible')
-            responseContainer.textContent = 'Error fetching'
+          .catch(function (err) {
+            responseContainer.classList.remove("invisible");
+            responseContainer.textContent = "Error fetching";
           })
-          .finally(function() {
-            loader.classList.add('invisible')
-          })
-      }
+          .finally(function () {
+            loader.classList.add("invisible");
+          });
+      };
     </script>
   </body>
 </html>

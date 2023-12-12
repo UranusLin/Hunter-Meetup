@@ -1,12 +1,13 @@
-import axios from 'axios';
-import { BookProps, BookDetailProps, BookRatingsProps } from 'const';
+import axios from "axios";
+import { RoomProps, RoomDetailProps, RoomRatingsProps } from "const";
 
-export async function fetchBooks(data: {
+export async function fetchRooms(data: {
   page?: number;
   size?: number;
-  type?: string;
+  location?: string;
+  roomType?: string;
   sort?: string;
-}): Promise<{ content: BookProps[]; total: number; error?: any }> {
+}): Promise<{ content: RoomProps[]; total: number; error?: any }> {
   try {
     const queryArray = Object.keys(data).reduce((prev: string[], item) => {
       const value = data[item as keyof typeof data];
@@ -15,7 +16,7 @@ export async function fetchBooks(data: {
       }
       return prev;
     }, []);
-    const response = await axios.get(`/api/books?${queryArray.join(`&`)}`);
+    const response = await axios.get(`/api/rooms?${queryArray.join(`&`)}`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -26,44 +27,61 @@ export async function fetchBooks(data: {
   }
 }
 
-export async function fetchBookTypes(): Promise<{
-  content: string[];
-  error?: any;
+export async function fetchLocation(): Promise<{
+  locationContent: string[];
+  locationError?: any;
 }> {
   try {
-    const response = await axios.get(`/api/books/types`);
+    const response = await axios.get(`/api/rooms/locations`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
-    return { content: response.data as string[] };
+    return { locationContent: response.data as string[] };
   } catch (error) {
     console.error(error);
-    return { error, content: [] };
+    return { locationError: error, locationContent: [] };
   }
 }
 
-export async function fetchBookDetailsById(id: string): Promise<{
-  content: BookDetailProps;
-  error?: any;
+// fetch room types
+export async function fetchRoomTypes(): Promise<{
+  roomTypeContent: string[];
+  roomTypeError?: any;
 }> {
   try {
-    const response = await axios.get(`/api/books/${id}`);
+    const response = await axios.get(`/api/rooms/roomTypes`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
-    return { content: response.data as BookDetailProps };
+    return { roomTypeContent: response.data as string[] };
   } catch (error) {
     console.error(error);
-    return { error, content: {} as BookDetailProps };
+    return { roomTypeError: error, roomTypeContent: [] };
+  }
+}
+
+export async function fetchRoomDetailsById(id: string): Promise<{
+  content: RoomDetailProps;
+  error?: any;
+}> {
+  try {
+    const response = await axios.get(`/api/rooms/${id}`);
+    if (response.status !== 200) {
+      throw new Error(`${response.status} - ${response.data}`);
+    }
+    return { content: response.data as RoomDetailProps };
+  } catch (error) {
+    console.error(error);
+    return { error, content: {} as RoomDetailProps };
   }
 }
 
 export async function fetchBookRatingsById(id: string): Promise<{
-  content: { content: BookRatingsProps[]; total: number };
+  content: { content: RoomRatingsProps[]; total: number };
   error?: any;
 }> {
   try {
-    const response = await axios.get(`/api/books/${id}/ratings`);
+    const response = await axios.get(`/api/rooms/${id}/ratings`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -76,13 +94,13 @@ export async function fetchBookRatingsById(id: string): Promise<{
 
 export async function updateBookDetails(
   id: string,
-  params: Partial<BookDetailProps>
+  params: Partial<RoomDetailProps>,
 ): Promise<{
-  content?: { data: BookDetailProps; message: string };
+  content?: { data: RoomDetailProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.put(`/api/books/${id}`, params);
+    const response = await axios.put(`/api/rooms/${id}`, params);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -97,13 +115,13 @@ export async function addRatingByBookID(
   bookID: string,
   params: {
     score: number;
-  }
+  },
 ): Promise<{
-  content?: { data: Omit<BookRatingsProps, 'user'>; message: string };
+  content?: { data: Omit<RoomRatingsProps, "user">; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.post(`/api/books/${bookID}/ratings`, params);
+    const response = await axios.post(`/api/rooms/${bookID}/ratings`, params);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -116,14 +134,14 @@ export async function addRatingByBookID(
 
 export async function deleteRating(
   bookID: string,
-  userID: string
+  userID: string,
 ): Promise<{
   content?: { message: string };
   error?: any;
 }> {
   try {
     const response = await axios.delete(
-      `/api/books/${bookID}/ratings?userId=${userID}`
+      `/api/rooms/${bookID}/ratings?userId=${userID}`,
     );
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
@@ -137,14 +155,14 @@ export async function deleteRating(
 
 export async function buyBook(
   bookID: string,
-  params: { userID: string; quality: number }
+  params: { userID: string; quality: number },
 ): Promise<{
   content?: { message: string };
   error?: any;
 }> {
   try {
     const response = await axios.post(
-      `/api/books/${bookID}/buy?userId=${params.userID}&quality=${params.quality}`
+      `/api/rooms/${bookID}/buy?userId=${params.userID}&quality=${params.quality}`,
     );
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);

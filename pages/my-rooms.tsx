@@ -5,13 +5,13 @@ import Head from "next/head";
 import CommonLayout from "components/v2/Layout";
 import ShoppingCartList from "components/v2/List/ShoppingCartList";
 
-const Cart: NextPage = () => {
+const MyRooms: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Shopping Cart</title>
+        <title>My Rooms</title>
         <meta name="description" content="shopping cart" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <CommonLayout
@@ -19,11 +19,11 @@ const Cart: NextPage = () => {
           hideMenu: true,
         }}
       >
-        <h1 className="font-bold text-5xl">Shopping Cart</h1>
+        <h1 className="font-bold text-5xl">My Rooms</h1>
         <ShoppingCartList />
       </CommonLayout>
     </>
   );
 };
 
-export default Cart;
+export default MyRooms;

@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { useSnackbar } from 'notistack';
+import * as React from "react";
+import { useSnackbar } from "notistack";
 
-import { useRecoilState } from 'recoil';
-import { bookTypeListState, homePageQueryState } from 'atoms';
-import clsx from 'clsx';
+import { useRecoilState } from "recoil";
+import { bookTypeListState, homePageQueryState } from "atoms";
+import clsx from "clsx";
 
-import { SORT_VALUE } from 'const';
-import { upperCaseEachWord } from 'lib/utils';
-import { fetchBookTypes } from 'lib/http';
+import { SORT_VALUE } from "const";
+import { upperCaseEachWord } from "lib/utils";
+import { fetchBookTypes } from "lib/http";
 
 export default function BookTypeMenu() {
   const [loadingBookType, setLoadingBookType] = React.useState(false);
@@ -25,7 +25,7 @@ export default function BookTypeMenu() {
       if (error) {
         setLoadingBookType(false);
         enqueueSnackbar(`Error: Fetch Book Types`, {
-          variant: 'error',
+          variant: "error",
         });
         return;
       }
@@ -39,10 +39,10 @@ export default function BookTypeMenu() {
     <>
       <ul
         tabIndex={0}
-        className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
+        className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
-          <div className='menu-title'>Book Type</div>
+          <div className="menu-title">Book Type</div>
           <ul>
             {bookTypeList.map((bookType) => (
               <li
@@ -68,7 +68,7 @@ export default function BookTypeMenu() {
         </li>
 
         <li>
-          <div className='menu-title'>Order by</div>
+          <div className="menu-title">Order by</div>
           <ul>
             {SORT_VALUE.map((sortType) => (
               <li

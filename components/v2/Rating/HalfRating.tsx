@@ -1,65 +1,37 @@
-import * as React from 'react';
-import clsx from 'clsx';
+import * as React from "react";
+import clsx from "clsx";
+import { UserIcon } from "@heroicons/react/24/outline";
+import { UserIcon as UserIconSolid } from "@heroicons/react/24/solid";
 
 export interface HalfRatingProps {
-  rating?: number;
+  joined?: number;
+  pending?: number;
   disabled?: boolean;
   onChange?: (rating: number) => void;
 }
 
-const STAR_COUNT = 5;
+const STAR_COUNT = 10;
 
 export default function HalfRating(props: HalfRatingProps) {
-  const { rating = 0, disabled = false, onChange } = props;
+  const { joined = 0, pending = 0, disabled = false, onChange } = props;
 
-  const [value, setValue] = React.useState(rating);
+  const [value, setValue] = React.useState(joined);
   const randomId = React.useId();
 
-  const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    setValue(Number(value));
-    onChange?.(Number(value));
-  };
-
   return (
-    <div className={clsx('rating rating-sm rating-half')}>
+    <div className="flex items-center">
       {new Array(STAR_COUNT).fill(0).map((_, index) => {
-        const checkedIdx = Math.floor(value);
-        const isHalf = value - checkedIdx >= 0.5;
+        const isJoined = index < joined;
+        const isPending = index >= joined && index < joined + pending;
 
         return (
-          <React.Fragment key={index}>
-            {index === 0 && checkedIdx === 0 && !isHalf && (
-              <input
-                type='radio'
-                name={`${randomId}-rating-${index}-hidden`}
-                className='rating-hidden hidden'
-                disabled
-                readOnly
-                defaultChecked
-              />
+          <button key={index} disabled={disabled} className="rating-button">
+            {isJoined && <UserIconSolid className="h-5 w-5 text-green-500" />}
+            {isPending && <UserIconSolid className="h-5 w-5 text-orange-500" />}
+            {!isJoined && !isPending && (
+              <UserIcon className="h-5 w-5 text-gray-400" />
             )}
-            <input
-              type='radio'
-              name={`${randomId}-rating-${index}-half`}
-              className='bg-green-500 mask mask-star-2 mask-half-1'
-              checked={index === checkedIdx && isHalf}
-              disabled={disabled}
-              readOnly={disabled}
-              value={index + 0.5}
-              onClick={handleClick}
-            />
-            <input
-              type='radio'
-              name={`${randomId}-rating-${index}-full`}
-              className='bg-green-500 mask mask-star-2 mask-half-2'
-              checked={index + 1 === checkedIdx && !isHalf}
-              disabled={disabled}
-              readOnly={disabled}
-              value={index + 1}
-              onClick={handleClick}
-            />
-          </React.Fragment>
+          </button>
         );
       })}
     </div>
