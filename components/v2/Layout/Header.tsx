@@ -40,7 +40,7 @@ export default function Header(props: HeaderProps) {
         </div>
         <div className="navbar-center">
           <NextLink href="/" className="btn btn-ghost normal-case text-xl">
-            <img src={"/painball.png"} alt={"painball"} className="w-6 h-6" />
+            <img src={"/HM_LOGO.png"} alt={"painball"} className="w-6 h-6" />
             {/*<BookOpenIcon className='w-6 h-6' />*/}
             Hunter Meetup
           </NextLink>

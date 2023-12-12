@@ -24,7 +24,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Hunter Meetup</title>
         <meta name="description" content="Hunter Meetup" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/HM_LOGO.png" />
       </Head>
 
       <CommonLayout>

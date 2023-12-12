@@ -11,7 +11,7 @@ const MyRooms: NextPage = () => {
       <Head>
         <title>My Rooms</title>
         <meta name="description" content="shopping cart" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/HM_LOGO.png" />
       </Head>
 
       <CommonLayout

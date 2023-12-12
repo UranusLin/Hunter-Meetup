@@ -25,7 +25,7 @@ const Book: NextPage = () => {
       <Head>
         <title>Room Details</title>
         <meta name="description" content="Room Details" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" href="/HM_LOGO.png" />
       </Head>
 
       <CommonLayout
