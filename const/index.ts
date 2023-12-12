@@ -54,3 +54,5 @@ export const starLabels: { [index: string]: string } = {
 export const PAGE_SIZE = 9;
 
 export const SORT_VALUE = ["published_at", "price"];
+
+export const KEY_PAIR_SESSION_STORAGE_KEY = "ephemeral_key_pair";
