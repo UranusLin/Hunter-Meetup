@@ -56,3 +56,5 @@ export const PAGE_SIZE = 9;
 export const SORT_VALUE = ["published_at", "price"];
 
 export const KEY_PAIR_SESSION_STORAGE_KEY = "ephemeral_key_pair";
+export const MAX_EPOCH_LOCAL_STORAGE_KEY = "max_epoch_key_pair";
+export const RANDOMNESS_SESSION_STORAGE_KEY = "randomness_key_pair";
